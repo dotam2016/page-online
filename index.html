@@ -49,12 +49,16 @@
                 
             }
 		result.value = decodedText;
-		html5QrCode.stop().then((ignore) => {
+		
+        }
+
+	    result.addEventListener('change', function(){
+            window.html5QrCode.stop().then((ignore) => {
   alert('stop')
 }).catch((err) => {
 alert('err stop')
 });
-        }
+        })
 
         var html5QrcodeScanner = new Html5QrcodeScanner(
             "qr-reader", { fps: 10, qrbox: 250, aspectRatio: 1.777778 });
