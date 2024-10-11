@@ -13,26 +13,38 @@
 </head>
 
 <body style="background: #fff;margin: 0;">
-	<button type="button">Scan QR</button>
+	<button type="button" id="start_scan">Scan QR</button>
 	<input type="text" id="result" placeholder=""/>
 	<style>
 		input {
 			font-size: 24px;
 			
 		}
+		button {padding: 10px 40px}
 	</style>
   
 	<script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
   <script>
 	var result = document.querySelector('#result');
+	var btnScan = document.querySelector('#start_scan');
 
 	 const html5QrCode = new Html5Qrcode("reader");
 		const qrCodeSuccessCallback = (decodedText, decodedResult) => {
-		    alert(decodedText)
+			result.value = decodedText;
+		    alert(decodedText);
+
+			html5QrCode.stop().then((ignore) => {
+ alert('stop');
+}).catch((err) => {
+  alert('stop error');
+});
 		};
 	  const config = { fps: 10, qrbox: { width: 250, height: 250 } };
-	  html5QrCode.start({ facingMode: "environment" }, config, qrCodeSuccessCallback);
-	  html5QrCode.start({ facingMode: { exact: "environment"} }, config, qrCodeSuccessCallback);
+	  btnScan.addEventListener('click', function(){
+		  
+		  html5QrCode.start({ facingMode: "environment" }, config, qrCodeSuccessCallback);
+		  html5QrCode.start({ facingMode: { exact: "environment"} }, config, qrCodeSuccessCallback);
+	  })
     </script>
 
 </body>
