@@ -13,10 +13,8 @@
 </head>
 
 <body style="background: #fff;margin: 0;">
-
-  <div id="qr-reader" style="width:100%"></div>
-<div id="qr-reader-results"></div>
-<input type="text" id="result" placeholder=""/>
+	<button type="button">Scan QR</button>
+	<input type="text" id="result" placeholder=""/>
 	<style>
 		input {
 			font-size: 24px;
@@ -26,44 +24,15 @@
   
 	<script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
   <script>
-	  var result = document.querySelector('#result');
-    function docReady(fn) {
-        // see if DOM is already available
-        if (document.readyState === "complete"
-            || document.readyState === "interactive") {
-            // call on next available tick
-            setTimeout(fn, 1);
-        } else {
-            document.addEventListener("DOMContentLoaded", fn);
-        }
-    }
+	var result = document.querySelector('#result');
 
-    docReady(function () {
-        var resultContainer = document.getElementById('qr-reader-results');
-        var lastResult, countResults = 0;
-        function onScanSuccess(decodedText, decodedResult) {
-            if (decodedText !== lastResult) {
-                ++countResults;
-                lastResult = decodedText;
-                // Handle on success condition with the decoded message.
-                
-            }
-		result.value = decodedText;
-		
-        }
-
-	    result.addEventListener('change', function(){
-            window.html5QrCode.stop().then((ignore) => {
-  alert('stop')
-}).catch((err) => {
-alert('err stop')
-});
-        })
-
-        var html5QrcodeScanner = new Html5QrcodeScanner(
-            "qr-reader", { fps: 10, qrbox: 250, aspectRatio: 1.777778 });
-        html5QrcodeScanner.render(onScanSuccess);
-    });
+	 const html5QrCode = new Html5Qrcode("reader");
+		const qrCodeSuccessCallback = (decodedText, decodedResult) => {
+		    alert(decodedText)
+		};
+	  const config = { fps: 10, qrbox: { width: 250, height: 250 } };
+	  html5QrCode.start({ facingMode: "environment" }, config, qrCodeSuccessCallback);
+	  html5QrCode.start({ facingMode: { exact: "environment"} }, config, qrCodeSuccessCallback);
     </script>
 
 </body>
