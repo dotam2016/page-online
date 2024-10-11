@@ -14,11 +14,19 @@
 
 <body style="background: #fff;margin: 0;">
 
-  <div id="qr-reader" style="width:500px"></div>
-    <div id="qr-reader-results"></div>
+  <div id="qr-reader" style="width:100%"></div>
+<div id="qr-reader-results"></div>
+<input type="text" id="result" placeholder=""/>
+	<style>
+		input {
+			font-size: 24px;
+			
+		}
+	</style>
   
 	<script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
   <script>
+	  var result = document.querySelector('#result');
     function docReady(fn) {
         // see if DOM is already available
         if (document.readyState === "complete"
@@ -40,7 +48,8 @@
                 // Handle on success condition with the decoded message.
                 
             }
-		alert(`Scan result ${decodedText}`, decodedResult);
+		result.textContent = decodedResult;
+		html5QrcodeScanner.stop();
         }
 
         var html5QrcodeScanner = new Html5QrcodeScanner(
