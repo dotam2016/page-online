@@ -181,11 +181,11 @@
           })
         );
       })
-      .catch(() => alert("error scanner.start"));
+      .catch(() => console.log("error scanner.start"));
 
     QrScanner.hasCamera()
       .then((hasCamera) => (camHasCamera.textContent = hasCamera))
-      .catch(() => alert("error scanner.hasCamera"));
+      .catch(() => console.log("error scanner.hasCamera"));
 
     // for debugging
     window.scanner = scanner;
