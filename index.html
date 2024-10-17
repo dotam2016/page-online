@@ -38,8 +38,8 @@
       </select>
       <br />
     </div>
-    <b>Device has camera: </b>
-    <span id="cam-has-camera"></span>
+    <!-- <b>Device has camera: </b>
+    <span id="cam-has-camera"></span> -->
     <br />
     <div style="display: none">
       <b>Preferred camera:</b>
@@ -114,6 +114,7 @@
     }
 
     #start-button {
+      display: block;
       width: 200px;
       lin-height: 50px;
       background: #000;
@@ -121,19 +122,20 @@
     }
     
     #stop-button {
+      display: block;
       width: 200px;
       lin-height: 50px;
       background: #c1c1c1;
       color: #000;
     }
     #cam-qr-result {
-      color: #f00;
+      color: red;
     }
   </style>
   <script>
     const video = document.getElementById("qr-video");
     const videoContainer = document.getElementById("video-container");
-    const camHasCamera = document.getElementById("cam-has-camera");
+    // const camHasCamera = document.getElementById("cam-has-camera");
     const camList = document.getElementById("cam-list");
     const flashState = document.getElementById("flash-state");
     const camQrResult = document.getElementById("cam-qr-result");
