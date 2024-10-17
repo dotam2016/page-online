@@ -44,7 +44,6 @@
     
     <!-- <b>Device has camera: </b>
     <span id="cam-has-camera"></span> -->
-    <br />
     <div style="display: none">
       <b>Preferred camera:</b>
       <select id="cam-list">
@@ -54,7 +53,6 @@
         <option value="user">User Facing</option>
       </select>
     </div>
-    <br />
     
     <div style="border: 1px solid #ccc;padding: 10px;display: flex;flex-direction: column;align-items: center;gap: 10px;border-radius: 3px;max-width: 600px;margin: 0 auto;">
       <b>Detected QR code: </b>
@@ -117,7 +115,8 @@
       margin-bottom: 16px;
     }
     video {
-        width: 400px;
+        width: 100%;
+        max-width: 400px;
         height: 400px;
     }
 
