@@ -51,7 +51,7 @@
       </select>
     </div>
     <br />
-    <b style="display: block;margin: 0 10px;>Detected QR code: </b>
+    <b>Detected QR code: </b>
     <span id="cam-qr-result">None</span>
     <br />
     <div style="display: flex;align-items: center;justify-content: center;flex-direction: column;">
@@ -172,7 +172,7 @@
       }
     );
 
-    scanner
+    /* scanner
       .start()
       .then(() => {
         updateFlashAvailability();
@@ -190,6 +190,7 @@
         );
       })
       .catch(() => console.log("error scanner.start"));
+      */
 
    /* QrScanner.hasCamera()
       .then((hasCamera) => (camHasCamera.textContent = hasCamera))
