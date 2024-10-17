@@ -7,11 +7,13 @@
     <title>Demo scan QR code</title>
   </head>
 
-  <body style="background: #fff">
-    <h1>Scan from WebCam:</h1>
+  <body style="text-align: center">
+    <h1>Scan QR code:</h1>
     <div id="video-container">
       <video id="qr-video"></video>
     </div>
+
+    
     <div style="display: none">
       <label>
         Highlight Style
@@ -38,6 +40,8 @@
       </select>
       <br />
     </div>
+
+    
     <!-- <b>Device has camera: </b>
     <span id="cam-has-camera"></span> -->
     <br />
@@ -51,8 +55,11 @@
       </select>
     </div>
     <br />
-    <b>Detected QR code: </b>
-    <span id="cam-qr-result">None</span>
+    
+    <div style" border: 1px solid #ccc;padding: 10px;display: flex;flex-direction: column;align-items: center;gap: 10px;border-radius: 3px;max-width: 600px;margin: 0 auto;">
+      <b>Detected QR code: </b>
+      <span id="cam-qr-result">None</span>
+    </div>
     <br />
     <div style="display: flex;align-items: center;justify-content: center;flex-direction: column;">
       <button id="start-button">Start Scan</button>
@@ -152,7 +159,7 @@
       clearTimeout(label.highlightTimeout);
       scanner.stop();
       label.highlightTimeout = setTimeout(
-        () => (label.style.color = "inherit"),
+        () => (label.style.color = "red"),
         100
       );
     }
@@ -172,7 +179,8 @@
       }
     );
 
-    /* scanner
+    /* mo camera ngay khi vao trinh duyet 
+      scanner
       .start()
       .then(() => {
         updateFlashAvailability();
@@ -207,7 +215,7 @@
       });
       */
 
-    document
+    /* document
       .getElementById("show-scan-region")
       .addEventListener("change", (e) => {
         const input = e.target;
@@ -215,6 +223,7 @@
         label.parentNode.insertBefore(scanner.$canvas, label.nextSibling);
         scanner.$canvas.style.display = input.checked ? "block" : "none";
       });
+      */
 
     document
       .getElementById("inversion-mode-select")
