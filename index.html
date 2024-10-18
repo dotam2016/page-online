@@ -304,7 +304,7 @@ recordButton.addEventListener("click", () => {
       sendButton.disabled = true;
     })
     .catch((error) => {
-      var isTrue = confirm('không có thiết bị');
+      var isTrue = confirm('마이크 접근 실패 !!!!');
       if(isTrue) location.reload();
       console.error("마이크 접근 실패: ", error);
     });
