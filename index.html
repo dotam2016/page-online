@@ -160,7 +160,6 @@
       right: 0;
       bottom: 0;
       background: rgba(0, 0, 0, 0.3);
-      display: flex;
       align-items: center;
       justify-content: center;
     }
@@ -259,7 +258,7 @@
 
     document.getElementById("start-button").addEventListener("click", () => {
       scanner.start();
-      videoContainer.style.display = 'block';
+      videoContainer.style.display = 'flex';
     });
 
     document.getElementById("stop-button").addEventListener("click", () => {
