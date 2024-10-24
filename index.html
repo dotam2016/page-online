@@ -8,102 +8,383 @@
   </head>
 
   <body style="text-align: center">
-   <div class="wrap">
-		<!-- [D] CONTENTS -->
-		<main id="content" class="content">
-			<!-- [D] STAFF PAGE -->
-			<section class="section section_staff_page">
-				<div class="section_inner">
-					<h1 class="main_title">스탬프 미션 완료</h1>
-					<h2 class="sub_title">STAFF 전용</h2>
-					<div class="cont_box">
-						<strong class="cont_title">유저 QR 정보</strong>
-						<div class="ipt_box">
-							<input type="text" placeholder="QR코드를 스캔하세요." id="js_qr_result" class="ipt_code js_qr_result">
-						</div>
-						<div class="btn_area">
-							<button type="button" class="btn btn_start_scan">QR 스캔</button>
-						</div>
-					</div>
-					<div class="cont_box">
-						<strong class="cont_title">스탬프 발급 인증번호</strong>
-						<div class="ipt_box">
-							<input type="password" placeholder="인증번호를 입력하세요." class="ipt_code js_ipt_code">
-							<button type="button" class="btn_show_password js_btn_show_password"><span class="blind">Show</span></button>
-						</div>
-						<div class="btn_area">
-							<button type="button" class="btn is_disable">확인</button>
-							<button type="button" class="btn is_reset">초기화</button>
-						</div>
-					</div>
-				</div>
-			</section>
-			<!-- // [D] STAFF PAGE -->
-		</main>
-      <div class="layer layer_offline_evt" style="display: block;">
-		<div class="dimmed"></div>
-		<div class="pop">
-			
-			<!-- [D] 2_스탬프렐리_운영스태프용_재확인_MO -->
-			<div class="pop_item pop_scan" style="display: block;">
-				<p class="pop_title">QR Scan</p>
-				<div class="pop_bx">
-					<div class="camera_qr">
-						<video id="qr-video"></video>
-					</div>
-				</div>
-				<div class="pop_btn">
-					<button type="button" class="btn_pop btn_primary btn_stop_scan js_btn_close">Stop Scan</button>
-				</div>
-				<button type="button" class="btn_close js_btn_close btn_stop_scan"><span class="blind">Close</span></button>
-			</div>
-		</div>
-	</div>
-		<!-- // [D] CONTENTS -->
-	</div>
-  </body>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="./qr-scanner.umd.min.js"></script>
+    <div class="container">
+        <h1>음성 녹음기</h1>
+        <button id="recordButton" class="button">녹음 시작</button>
+        <button id="stopButton" class="button" disabled>녹음 중지</button>
+        <a id="downloadLink" class="hidden">다운로드</a>
+
+        <button id="sendButton" class="button" disabled>API로 전송</button>
+
+    </div>
+    <hr>
+    <h1>Scan QR code:</h1>
+    <div id="video-container">
+      <video id="qr-video"></video>
+    </div>
+
+    
+    <div style="display: none">
+      <label>
+        Highlight Style
+        <select id="scan-region-highlight-style-select">
+          <option value="default-style">Default style</option>
+          <option value="example-style-1">Example custom style 1</option>
+          <option value="example-style-2">Example custom style 2</option>
+        </select>
+      </label>
+      <label>
+        <input id="show-scan-region" type="checkbox" />
+        Show scan region canvas
+      </label>
+    </div>
+    <div style="display: none">
+      <select id="inversion-mode-select">
+        <option value="original">
+          Scan original (dark QR code on bright background)
+        </option>
+        <option value="invert">
+          Scan with inverted colors (bright QR code on dark background)
+        </option>
+        <option value="both">Scan both</option>
+      </select>
+      <br />
+    </div>
+
+    
+    <!-- <b>Device has camera: </b>
+    <span id="cam-has-camera"></span> -->
+    <div style="display: none">
+      <b>Preferred camera:</b>
+      <select id="cam-list">
+        <option value="environment" selected>
+          Environment Facing (default)
+        </option>
+        <option value="user">User Facing</option>
+      </select>
+    </div>
+    
+    <div style="border: 1px solid #ccc;padding: 10px;display: flex;flex-direction: column;align-items: center;gap: 10px;border-radius: 3px;max-width: 600px;margin: 0 auto;">
+      <b>Detected QR code: </b>
+      <span id="cam-qr-result">None</span>
+    </div>
+    <div style="display: flex;align-items: center;justify-content: center;flex-direction: column;">
+      <button id="start-button">Start Scan</button>
+      <button id="stop-button">Stop Scan</button>
+    </div>
+    
+    <!-- Javascript -->
+    <script src="./qr-scanner.umd.min.js"></script>
     <script src="./qr-scanner-worker.min.js" type="module"></script>
+    <!-- // Javascript -->
+  </body>
+
   <style>
     div {
       margin-bottom: 16px;
-@@ -155,44 +165,226 @@ <h2 class="sub_title">STAFF 전용</h2>
+    }
+
+    #video-container {
+      line-height: 0;
+    }
+
+    #video-container.example-style-1 .scan-region-highlight-svg,
+    #video-container.example-style-1 .code-outline-highlight {
+      stroke: #64a2f3 !important;
+    }
+
+    #video-container.example-style-2 {
+      position: relative;
+      width: max-content;
+      height: max-content;
+      overflow: hidden;
+    }
+
+    #video-container.example-style-2 .scan-region-highlight {
+      border-radius: 30px;
+      outline: rgba(0, 0, 0, 0.25) solid 50vmax;
+    }
+
+    #video-container.example-style-2 .scan-region-highlight-svg {
+      display: none;
+    }
+
+    #video-container.example-style-2 .code-outline-highlight {
+      stroke: rgba(255, 255, 255, 0.5) !important;
+      stroke-width: 15 !important;
+      stroke-dasharray: none !important;
+    }
+
+    hr {
+      margin-top: 32px;
+    }
+
+    input[type="file"] {
+      display: block;
+      margin-bottom: 16px;
+    }
+    video {
+        width: 100%;
+        max-width: 400px;
+        height: 400px;
+    }
+
+    #start-button {
+      display: block;
+      width: 200px;
+      line-height: 50px;
+      background: #000;
+      color: #fff;
+      border: none;
+      margin-top: 15px;
+    }
+    
+    #stop-button {
+      display: block;
+      width: 200px;
+      line-height: 50px;
+      background: #c1c1c1;
+      color: #000;
+      border: none;
+      margin-top: 15px;
+    }
+    #cam-qr-result {
+      color: red;
+    }
+
+    #video-container {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.3);
+      align-items: center;
+      justify-content: center;
     }
   </style>
   <script>
-	const video = document.getElementById("qr-video");
-	const camQrResult = document.getElementById("js_qr_result");
-	function setResult(label, result) {
-	  label.value = result.data;
-	  clearTimeout(label.highlightTimeout);
-	  $('.layer').hide();
-	  $('.pop_scan').css('display', 'none');
-	  scanner.stop();
-		
-	}
-	const scanner = new QrScanner(
-	  video,
-	  (result) => setResult(camQrResult, result), {
-	    onDecodeError: (error) => {
-	      camQrResult.value = error;
-	    },
-	    highlightScanRegion: true,
-	    highlightCodeOutline: true,
-	  }
-	);
-	$(document).on('click', '.btn_start_scan', function () {
-	  scanner.start().then(() => {
-	    $('.layer').show();
-	    $('.pop_scan').css('display', 'flex');
-	  }).catch((err) => {
-	    alert('카메라를 찾을 수 없습니다.')
-	  });
-	})
-	$(document).on('click', '.btn_stop_scan', function () {
-	  scanner.stop();
-	  $('.layer').hide();
-	  $('.pop_scan').css('display', 'none');
-	})
-	</script>
+    const video = document.getElementById("qr-video");
+    const videoContainer = document.getElementById("video-container");
+    // const camHasCamera = document.getElementById("cam-has-camera");
+    const camList = document.getElementById("cam-list");
+    const flashState = document.getElementById("flash-state");
+    const camQrResult = document.getElementById("cam-qr-result");
+
+    function setResult(label, result) {
+      console.log(result.data);
+      label.textContent = result.data;
+      label.style.color = "red";
+      clearTimeout(label.highlightTimeout);
+      videoContainer.style.display = 'none';
+      scanner.stop();
+      label.highlightTimeout = setTimeout(
+        () => (label.style.color = "red"),
+        100
+      );
+    }
+
+    // ####### Web Cam Scanning #######
+
+    const scanner = new QrScanner(
+      video,
+      (result) => setResult(camQrResult, result),
+      {
+        onDecodeError: (error) => {
+          camQrResult.textContent = error;
+        },
+        highlightScanRegion: true,
+        highlightCodeOutline: true,
+        
+      }
+    );
+
+    /* mo camera ngay khi vao trinh duyet  
+      scanner
+      .start()
+      .then(() => {
+        updateFlashAvailability();
+        // List cameras after the scanner started to avoid listCamera's stream and the scanner's stream being requested
+        // at the same time which can result in listCamera's unconstrained stream also being offered to the scanner.
+        // Note that we can also start the scanner after listCameras, we just have it this way around in the demo to
+        // start the scanner earlier.
+        QrScanner.listCameras(true).then((cameras) =>
+          cameras.forEach((camera) => {
+            const option = document.createElement("option");
+            option.value = camera.id;
+            option.text = camera.label;
+            camList.add(option);
+          })
+        );
+      })
+      .catch(() => console.log("error scanner.start"));
+      */
+
+   /* QrScanner.hasCamera()
+      .then((hasCamera) => (camHasCamera.textContent = hasCamera))
+      .catch(() => console.log("error scanner.hasCamera")); */
+
+    // for debugging
+    // window.scanner = scanner;
+
+    /* document
+      .getElementById("scan-region-highlight-style-select")
+      .addEventListener("change", (e) => {
+        videoContainer.className = e.target.value;
+        scanner._updateOverlay(); // reposition the highlight because style 2 sets position: relative
+      });
+      */
+
+    /* document
+      .getElementById("show-scan-region")
+      .addEventListener("change", (e) => {
+        const input = e.target;
+        const label = input.parentNode;
+        label.parentNode.insertBefore(scanner.$canvas, label.nextSibling);
+        scanner.$canvas.style.display = input.checked ? "block" : "none";
+      });
+      */
+
+    document
+      .getElementById("inversion-mode-select")
+      .addEventListener("change", (event) => {
+        scanner.setInversionMode(event.target.value);
+      });
+
+    camList.addEventListener("change", (event) => {
+      scanner.setCamera(event.target.value).then(updateFlashAvailability);
+    });
+
+    document.getElementById("start-button").addEventListener("click", () => {
+      scanner.start();
+      videoContainer.style.display = 'flex';
+    });
+
+    document.getElementById("stop-button").addEventListener("click", () => {
+      scanner.stop();
+      videoContainer.style.display = 'none';
+    });
+  </script>
+
+  <script>
+    // HTML 요소 가져오기
+const recordButton = document.getElementById("recordButton");
+const stopButton = document.getElementById("stopButton");
+const sendButton = document.getElementById("sendButton");
+const downloadLink = document.getElementById("downloadLink");
+
+let mediaRecorder;
+let audioChunks = [];
+let audioBlob = null; // 전송할 녹음된 Blob
+
+// 녹음 시작 버튼 클릭 이벤트
+recordButton.addEventListener("click", () => {
+  navigator.mediaDevices
+    .getUserMedia({ audio: true })
+    .then((stream) => {
+      mediaRecorder = new MediaRecorder(stream);
+
+      // 데이터가 수집될 때마다 audioChunks에 저장
+      mediaRecorder.ondataavailable = (event) => {
+        audioChunks.push(event.data);
+      };
+
+      // 녹음 종료 시 Blob으로 파일 생성
+      mediaRecorder.onstop = () => {
+        audioBlob = new Blob(audioChunks, { type: "audio/wav" });
+        const audioUrl = URL.createObjectURL(audioBlob);
+
+        // 다운로드 링크 설정
+        downloadLink.href = audioUrl;
+        downloadLink.download = "recording.wav";
+        downloadLink.textContent = "녹음 파일 다운로드";
+        downloadLink.classList.remove("hidden");
+
+        // 버튼 재설정
+        stopButton.disabled = true;
+        recordButton.disabled = false;
+        sendButton.disabled = false;
+      };
+
+      // 녹음 시작
+      mediaRecorder.start();
+      audioChunks = [];
+
+      // 버튼 상태 변경
+      recordButton.disabled = true;
+      stopButton.disabled = false;
+      downloadLink.classList.add("hidden");
+      sendButton.disabled = true;
+    })
+    .catch((error) => {
+      var isTrue = confirm('마이크 접근 실패 !!!!');
+      if(isTrue) location.reload();
+      console.error("마이크 접근 실패: ", error);
+    });
+});
+
+// 녹음 중지 버튼 클릭 이벤트
+stopButton.addEventListener("click", () => {
+  mediaRecorder.stop();
+});
+
+// API 전송 버튼 클릭 이벤트
+// Base64 인코딩 함수
+function arrayBufferToBase64(buffer) {
+    let binary = '';
+    const bytes = new Uint8Array(buffer);
+    const len = bytes.byteLength;
+    for (let i = 0; i < len; i++) {
+      binary += String.fromCharCode(bytes[i]);
+    }
+    return window.btoa(binary); // Base64 인코딩
+  }
+  
+  // playerUID를 동적으로 전달할 수 있도록 설정, 기본값은 158
+  const playerUID = 158;  // 필요에 따라 이 값을 변경할 수 있습니다
+  
+  sendButton.addEventListener('click', () => {
+    if (audioBlob) {
+      // Blob을 ArrayBuffer로 변환
+      const reader = new FileReader();
+      reader.readAsArrayBuffer(audioBlob);
+      
+      reader.onloadend = function() {
+        const arrayBuffer = reader.result;
+  
+        // ArrayBuffer를 Base64로 변환
+        const voiceBytesBase64 = arrayBufferToBase64(arrayBuffer);
+  
+        // JSON 데이터 생성
+        const jsonData = {
+          voiceBytes: voiceBytesBase64,  // Base64로 변환된 음성 데이터를 전송
+          spellText: '플래시 카디언 서로를 보호하는 끈끈한 유대를'  // 요청하신 텍스트로 변경
+        };
+  
+        // 동적으로 URL 생성
+        const apiUrl = `https://scouter.relugames.dev:11080/player/voice/decide/${playerUID}`;
+
+        console.log(jsonData)
+  
+        // API로 POST 요청 보내기
+        fetch(apiUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',  // JSON 형식으로 전송
+          },
+          body: JSON.stringify(jsonData)  // JSON 데이터 전송
+        })
+        .then(response => response.json())
+        .then(data => {
+          console.log('파일 전송 성공: ', data);
+        })
+        .catch(error => {
+          console.error('파일 전송 실패: ', error);
+        });
+      };
+    }
+  });
+
+  </script>
 </html>
