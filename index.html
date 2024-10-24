@@ -20,7 +20,7 @@
 					<div class="cont_box">
 						<strong class="cont_title">유저 QR 정보</strong>
 						<div class="ipt_box">
-							<input type="text" placeholder="QR코드를 스캔하세요." class="ipt_code js_qr_result">
+							<input type="text" placeholder="QR코드를 스캔하세요." id="js_qr_result" class="ipt_code js_qr_result">
 						</div>
 
 						<div class="btn_area">
@@ -164,6 +164,7 @@
 	  $('.layer').hide();
 	  $('.pop_scan').css('display', 'none');
 	  scanner.stop();
+		
 	}
 
 	const scanner = new QrScanner(
