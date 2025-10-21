@@ -8,6 +8,10 @@
   </head>
 
   <body style="text-align: center">
+    <div>
+      <button type="button">copy url</button>
+    </div>
+    <br>
     <div class="container">
         <h1>음성 녹음기</h1>
         <button id="recordButton" class="button">녹음 시작</button>
@@ -72,8 +76,8 @@
       <button id="start-button">Start Scan</button>
       <button id="stop-button">Stop Scan</button>
     </div>
-    
     <!-- Javascript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="./qr-scanner.umd.min.js"></script>
     <script src="./qr-scanner-worker.min.js" type="module"></script>
     <!-- // Javascript -->
@@ -386,5 +390,45 @@ function arrayBufferToBase64(buffer) {
     }
   });
 
+  </script>
+  <script>
+    $(document).on("click", ".js-btn-copy", function (e) {
+      const url = window.location.href // get value
+      // console.log("copy url:", url)
+      // $("#popup-alert-copy").parents('.layer').addClass('is-show');
+      // $("#popup-alert-copy").addClass('is-show');
+      // if (navigator.clipboard && navigator.clipboard.writeText) {
+      //   navigator.clipboard.writeText(url)
+      //     .then(function () {})
+      //     .catch(function (err) {
+      //       console.log("error copy")
+      //     });
+      // } else {
+      //   var $temp = $('<input>');
+      //   $('body').append($temp);
+      //   $temp.val(url).select();
+      //   document.execCommand('copy');
+      //   $temp.remove();
+      // }
+      // return false
+      e.preventDefault();
+       if (navigator.clipboard && navigator.clipboard.writeText) {
+          // clipboard API 지원
+          navigator.clipboard.writeText(url)
+            .then(() => {
+            })
+            .catch(() => {
+              alert("주소 복사에 실패했습니다. 다시 시도해주세요.");
+            });
+        } else {
+          // fallback: execCommand 사용
+          const tempInput = document.createElement("input");
+          tempInput.value = url;
+          document.body.appendChild(tempInput);
+          tempInput.select();
+          document.execCommand("copy");
+          document.body.removeChild(tempInput);
+        }
+    })
   </script>
 </html>
