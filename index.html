@@ -9,7 +9,7 @@
 
   <body style="text-align: center">
     <div>
-      <button type="button">copy url</button>
+      <button type="button" class="js-btn-copy">copy url</button>
     </div>
     <br>
     <div class="container">
@@ -416,12 +416,15 @@ function arrayBufferToBase64(buffer) {
           // clipboard API 지원
           navigator.clipboard.writeText(url)
             .then(() => {
+              console.log("true:: copy")
             })
             .catch(() => {
               alert("주소 복사에 실패했습니다. 다시 시도해주세요.");
             });
-        } else {
+         
+       } else {
           // fallback: execCommand 사용
+         console.log("fallback copy")
           const tempInput = document.createElement("input");
           tempInput.value = url;
           document.body.appendChild(tempInput);
