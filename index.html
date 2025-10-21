@@ -12,6 +12,11 @@
       <button type="button" class="js-btn-copy">copy url</button>
     </div>
     <br>
+    <div>
+      <button type="button" class="btn-share">share button (Mobile)</button>
+      <span class="result-share"></span>
+    </div>
+    <br>
     <div class="container">
         <h1>음성 녹음기</h1>
         <button id="recordButton" class="button">녹음 시작</button>
@@ -433,5 +438,25 @@ function arrayBufferToBase64(buffer) {
           document.body.removeChild(tempInput);
         }
     })
+  </script>
+  <script>
+          const shareData = {
+        title: "MDN",
+        text: "Learn web development on MDN!",
+        url: "https://developer.mozilla.org",
+      };
+      
+      const btn = document.querySelector(".btn-share");
+      const resultPara = document.querySelector(".result-share");
+      
+      // Share must be triggered by "user activation"
+      btn.addEventListener("click", async () => {
+        try {
+          await navigator.share(shareData);
+          resultPara.textContent = "MDN shared successfully";
+        } catch (err) {
+          resultPara.textContent = `Error: ${err}`;
+        }
+      });
   </script>
 </html>
