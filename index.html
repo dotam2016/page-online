@@ -208,7 +208,7 @@
   </style>
   <script>
     const shareFacebook = function () {
-    $('.js-fb-fb').on("click", function(e) {
+    $('.js-btn-fb').on("click", function(e) {
       e.preventDefault();
 
       const shareUrl = location.origin.includes('dotam2016.github.io/page-online') ? location.origin + location.pathname : "https://dotam2016.github.io/page-online/";
@@ -232,6 +232,8 @@
         (window.innerWidth / 4) + ', toolbar=0, location=0, menubar=0, directories=0, scrollbars=0');
     });
   }
+    shareFacebook()
+    shareX()
   </script>
   <script>
     const video = document.getElementById("qr-video");
