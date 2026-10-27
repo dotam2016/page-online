@@ -5,6 +5,9 @@
     <meta name="format-detection" content="telephone=no" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=no">
     <title>Demo scan QR code</title>
+    <meta property="og:title" content="Title share">
+    <meta property="og:url" content="https://dotam2016.github.io/page-online/">
+    <meta property="og:description" content="Đây là nội dung mô tả của share our 🔫 gun">
     <script type="text/javascript">
         (function(c,l,a,r,i,t,y){
             c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
@@ -26,6 +29,12 @@
   <body style="text-align: center">
     <div>
       <button type="button" class="js-btn-copy">copy url</button>
+    </div>
+    <div>
+      <button type="button" class="js-btn-fb">Share Facebook</button>
+    </div>
+    <div>
+      <button type="button" class="js-btn-x">Share X</button>
     </div>
     <br>
     <div>
@@ -197,6 +206,33 @@
       justify-content: center; */
     }
   </style>
+  <script>
+    const shareFacebook = function () {
+    $('.js-fb-fb').on("click", function(e) {
+      e.preventDefault();
+
+      const shareUrl = location.origin.includes('dotam2016.github.io/page-online') ? location.origin + location.pathname : "https://dotam2016.github.io/page-online/";
+      const fbUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`;
+
+      window.open(fbUrl, 'fbShareWindow', 'height=450, width=550, top=150, left=' +
+        (window.innerWidth / 4) + ', toolbar=0, location=0, menubar=0, directories=0, scrollbars=0');
+    });
+  }
+  const shareX = function () {
+    $('.js-btn-x').on("click", function(e) {
+      e.preventDefault();
+
+      const text = "방치 그 이상, 라이즈 신 키우기ㅣ언리얼 엔진으로 완성한 방치형 RPG";
+      const url = location.origin.includes('dotam2016.github.io/page-online') ? location.origin + location.pathname : "https://dotam2016.github.io/page-online/";
+
+      // const shareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`;
+      const shareUrl = `https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}`;
+
+      window.open(shareUrl, 'XShareWindow', 'height=450, width=550, top=150, left=' +
+        (window.innerWidth / 4) + ', toolbar=0, location=0, menubar=0, directories=0, scrollbars=0');
+    });
+  }
+  </script>
   <script>
     const video = document.getElementById("qr-video");
     const videoContainer = document.getElementById("video-container");
